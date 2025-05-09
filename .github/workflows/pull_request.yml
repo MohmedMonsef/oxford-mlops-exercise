@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch: # Enables manual trigger from GitHub UI
   pull_request:
     types: [opened, reopened]
 
@@ -11,14 +12,14 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version-file: ".python-version"
 
     - name: Install uv
       uses: astral-sh/setup-uv@v5
 
     - name: Install project dependencies using uv
       run: |
-        uv install
+        uv sync --locked --all-extras --dev
 
     - name: Test with pytest
       run: |
